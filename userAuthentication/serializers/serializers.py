@@ -34,13 +34,21 @@ class TenantsListSerializer ( ModelSerializer ):
         return name
 
 class UserSerializer ( ModelSerializer ):
+    Avatar = SerializerMethodField()
+
     class Meta:
         model = user
         fields = [
-            'username', 
+            'username',
             'first_name',
-            'last_name'
+            'last_name',
+            'Avatar'
         ]
+
+    def get_Avatar ( self,obj ):
+        avatar_qs = avatar_class.objects.filter_by_instance(obj)
+        Avatar = AvatarSerializer (avatar_qs,many=True).data
+        return Avatar
 
 class LocationSerializer ( ModelSerializer ):
 
@@ -77,7 +85,7 @@ class AgencyAdminDetailsSerializer ( ModelSerializer ):
         model = admin_class
         fields = [
             'User_details',
-            'Agency_details'
+            'Agency_details',
         ]
 
     def get_User_details (self,obj):
@@ -96,7 +104,7 @@ class AgencySuperAdminDetailsSerializer ( ModelSerializer ):
         model = superadmin_class
         fields = [
             'User_details',
-            'Agency_details'
+            'Agency_details',
         ]
 
     def get_User_details (self,obj):
@@ -106,3 +114,11 @@ class AgencySuperAdminDetailsSerializer ( ModelSerializer ):
     def get_Agency_details (self,obj):
         Agency_details = AgencyDetailsSerializer(obj.Agency_details).data
         return Agency_details
+
+class AvatarSerializer ( ModelSerializer ):
+
+    class Meta:
+        model = avatar_class
+        fields = [
+            'avatar'
+        ]

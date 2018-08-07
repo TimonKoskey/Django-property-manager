@@ -1,6 +1,12 @@
 from django.db import models
 from django.conf import settings
 
+class MyManager ( models.Manager ):
+
+  def filter_by_instance(self, instance):
+    qs = super(MyManager, self).filter(User_details = instance )
+    return qs
+
 class Location (models.Model):
     County = models.CharField (max_length = 20,null=True)
     City_or_Town = models.CharField (max_length = 20,null=True)
@@ -46,6 +52,8 @@ class Tenant (models.Model):
 class Avatar (models.Model):
     User_details = models.OneToOneField (settings.AUTH_USER_MODEL,on_delete = models.CASCADE,null=True)
     avatar = models.FileField (null=True)
+
+    objects = MyManager()
 
 classNames = {
     'AgencyClass' : RealEstateManagementAgency,

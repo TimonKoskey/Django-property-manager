@@ -30,6 +30,7 @@ class PropertiesListSerializer ( ModelSerializer ):
     class Meta:
         model = property_class
         fields = [
+            'id',
             'Property_overview_photo',
             'Property_name',
             'Location',
@@ -50,6 +51,8 @@ class PropertiesListSerializer ( ModelSerializer ):
 
 class PropertyDetailsSerializer ( ModelSerializer ):
     units_list = SerializerMethodField()
+    Administrator = SerializerMethodField()
+    Location = SerializerMethodField()
 
     class Meta:
         model = property_class
@@ -60,7 +63,7 @@ class PropertyDetailsSerializer ( ModelSerializer ):
             'Location',
             'Number_of_units',
             'Availlable_units',
-            'Administrator'
+            'Administrator',
             'Occupied_units',
             'units_list'
         ]
@@ -69,6 +72,14 @@ class PropertyDetailsSerializer ( ModelSerializer ):
         units_list_qs = objects = unitdetail_class.objects.filter_by_instance(obj)
         units_list = UnitsListSerializer (units_list_qs,many = True).data
         return units_list
+
+    def get_Administrator (self,obj):
+        Administrator = UserSerializer (obj.Administrator.User_details).data
+        return Administrator
+
+    def get_Location (self,obj):
+        Location = LocationSerializer (obj.Location).data
+        return Location
 
 class UnitsListSerializer ( ModelSerializer ):
     tenant = SerializerMethodField()
