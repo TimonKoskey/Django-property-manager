@@ -42,6 +42,8 @@ class PropertyListAPIView( ListAPIView ):
 
 	def get_queryset(self,*args,**kwargs):
 		queryset = []
+		auth = self.request.META
+		# print(auth)
 		user_ID = int(self.request.GET.get('user'))
 		permission = self.request.GET.get('permission')
 		user_obj = User.objects.get(id = user_ID)
@@ -56,6 +58,9 @@ class PropertyListAPIView( ListAPIView ):
 
 		return queryset
 
-class PropertyDetailsAPIView ( RetrieveUpdateAPIView ):
+class PropertyDetailsAPIView ( RetrieveAPIView ):
 	queryset = property_class
 	serializer_class = PropertyDetailsSerializer
+
+	# def perfom_retrieve(self,serializer):
+	# 	print (self.request.user)

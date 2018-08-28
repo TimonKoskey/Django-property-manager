@@ -4,7 +4,7 @@ from userAuthentication.models import classNames,tenant_class
 class MyManager ( models.Manager ):
 
   def filter_by_instance(self, instance):
-    qs = super(MyManager, self).filter( Property_ID = instance )
+    qs = super(MyManager, self).filter( PropertyDetail = instance )
     return qs
 
 class PropertyDetail (models.Model):
@@ -24,12 +24,12 @@ class PropertyDetail (models.Model):
         return "%s" %(self.Property_name)
 
 class UnitDetail (models.Model):
-    Property_ID = models.ForeignKey (PropertyDetail,on_delete = models.CASCADE,null=True)
+    PropertyDetail = models.ForeignKey (PropertyDetail,on_delete = models.CASCADE,null=True)
     Unit_ID = models.CharField (max_length = 10,null=True)
-    Unit_size = models.CharField (max_length = 10,null=True)
+    Unit_size = models.CharField (max_length = 50,null=True)
     Number_of_rooms = models.CharField (max_length = 10,null=True)
     Is_occupied = models.BooleanField (default = False)
-    Tenant_ID = models.ForeignKey (tenant_class,on_delete = models.CASCADE,null=True)
+    Tenant_ID = models.ForeignKey (tenant_class,on_delete = models.CASCADE,null=True,blank=True)
 
     objects = MyManager()
 

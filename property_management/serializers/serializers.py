@@ -69,7 +69,7 @@ class PropertyDetailsSerializer ( ModelSerializer ):
         ]
 
     def get_units_list ( self,obj):
-        units_list_qs = objects = unitdetail_class.objects.filter_by_instance(obj)
+        units_list_qs = unitdetail_class.objects.filter_by_instance(obj)
         units_list = UnitsListSerializer (units_list_qs,many = True).data
         return units_list
 
@@ -82,15 +82,16 @@ class PropertyDetailsSerializer ( ModelSerializer ):
         return Location
 
 class UnitsListSerializer ( ModelSerializer ):
-    tenant = SerializerMethodField()
+    # tenant = SerializerMethodField()
     class Meta:
         model = unitdetail_class
         fields = [
-            'Unit_ID',
+            'id',
+            'PropertyDetail',
             'Unit_size',
             'Number_of_rooms'
-            'tenant'
+            # 'tenant'
         ]
-    def get_tenant(self,obj):
-        tenant = TenantsListSerializer(obj.Tenant_ID).data
-        return tenant
+    # def get_tenant(self,obj):
+    #     tenant = TenantsListSerializer(obj.Tenant_ID).data
+    #     return tenant

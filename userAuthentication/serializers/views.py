@@ -61,7 +61,7 @@ class LoginDetails ( APIView ):
     def get (self, request, *args, **kwargs):
         user_id = kwargs.get('pk')
         user_obj = user.objects.get(id = user_id)
-        print (dir(user_obj))
+        # print (dir(user_obj))
         serializer = []
 
         serializer_obj = superadmin_class.objects.filter(User_details = user_obj)
