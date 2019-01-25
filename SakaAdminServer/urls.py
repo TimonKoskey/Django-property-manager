@@ -20,8 +20,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/serializers/',include('userAuthentication.serializers.urls')),
-    path('property/serializers/',include('property_management.serializers.urls'))
+    path('users/serializers/',include('app_users.serializers.urls')),
+    path('property/serializers/',include('property.serializers.urls'))
 ]
 
 if settings.DEBUG:
