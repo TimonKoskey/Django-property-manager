@@ -22,6 +22,7 @@ urlpatterns = [
     path(r'unit/create/', UnitCreateAPIView.as_view()),
     path(r'units/list/<int:prop_id>/', UnitsListAPIView.as_view()),
     path(r'unit/details/edit/<int:pk>/',UnitDetailsAPIView.as_view()),
+    path(r'unit/details/delete/<int:pk>/',UnitDetailsAPIView.as_view()),
     path(r'unit/tenant/register/<int:unit_id>/',CreateUnitTenantAPIView.as_view()),
     path(r'unit/tenant/records/create/<int:unit_id>/',CreateUnitTenantRecords.as_view()),
     path(r'unit/tenant/payment_records/create/<int:unit_id>/',CreateUnitTenantPaymentRecords.as_view()),
