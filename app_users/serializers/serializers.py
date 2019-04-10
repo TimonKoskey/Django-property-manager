@@ -52,61 +52,65 @@ class CreateUserSerializer (ModelSerializer):
         user_passwd=User.objects.make_random_password()
         user_obj.set_password(user_passwd)
         user_obj.save()
-        send_mail(
-                'SakaAdmin login credentials',
-                'username: %s  password: %s' %(user_obj.username,user_passwd),
-                'timonkosy92@gmail.com',
-                ['%s' %(user_obj.email)]
-            )
+        # send_mail(
+        #         'SakaAdmin login credentials',
+        #         'username: %s  password: %s' %(user_obj.username,user_passwd),
+        #         'timonkoskey@gmail.com',
+        #         ['%s' %(user_obj.email)]
+        #     )
         return user_obj
+
+    def update (self, instance, validated_data):
+        instance.first_name=validated_data.get('first_name',instance.first_name)
+        instance.last_name=validated_data.get('last_name', instance.last_name)
+        instance.username=validated_data.get('username', instance.username)
+        instance.email=validated_data.get('email',instance.email)
+
+        instance.save(update_fields=['first_name', 'last_name',
+            'username', 'email'])
+
+        return instance
 
 class UserRoleSerializer (ModelSerializer):
 
     class Meta:
         model=role_class
         fields=[
+            'id',
             'role_name',
             'date_created'
         ]
 
 class ExtendedUserDetailsSerailizer (ModelSerializer):
     user = SerializerMethodField()
-    role = SerializerMethodField()
+    # role = SerializerMethodField()
 
     class Meta:
         model=user_detail_class
         fields=[
             'id',
             'user',
-            'role',
+            'role_name',
+            'date_created',
             'mobile_number'
             ]
     def get_user(self,obj):
         user = UserSerializer(obj.user).data
         return user
 
-    def get_role(self,obj):
-        role = UserRoleSerializer(obj.role).data
-        return role
-
 class CreateExtendedUserDetailsSerailizer (ModelSerializer):
     user = SerializerMethodField()
-    role = SerializerMethodField()
 
     class Meta:
         model=user_detail_class
         fields=[
             'user',
-            'role',
-            # 'mobile_number'
+            'role_name',
+            'mobile_number'
             ]
     def get_user(self,obj):
         user = UserSerializer(obj.user).data
         return user
-
-    def get_role(self,obj):
-        role = UserRoleSerializer(obj.role).data
-        return role
 
 class ManagementCompanyCreateSerailizer (ModelSerializer):
 
@@ -150,6 +154,7 @@ class TenantSerializer(ModelSerializer):
     class Meta:
         model=tenant_details_class
         fields=[
+            'id',
             'user',
             'phone_number',
             'occupation',
@@ -178,6 +183,18 @@ class TenantSerializer(ModelSerializer):
         tenant_obj.save()
         return tenant_obj
 
+    def update (self, instance, validated_data):
+        instance.phone_number=validated_data['phone_number']
+        instance.occupation=validated_data['occupation']
+        instance.relationship_status=validated_data['relationship_status']
+        instance.emergency_contact_name=validated_data['emergency_contact_name']
+        instance.emergency_contact_relationship=validated_data['emergency_contact_relationship']
+        instance.emergency_contact_phone_number=validated_data['emergency_contact_phone_number']
+
+        instance.save()
+
+        return instance
+
 class TenantRecordSerializer (ModelSerializer):
 
     class Meta:
@@ -205,10 +222,26 @@ class PaymentRecordSerializer( ModelSerializer ):
         amount_paid=validated_data['amount_paid']
         balance=validated_data['balance']
         mode_of_payment=validated_data['mode_of_payment']
-        # date_of_payment=validated_data['date_of_payment']
         payment_status=validated_data['payment_status']
 
         tenant_payment_record_obj=tenant_payment_record(expected_amount=expected_amount,amount_paid=amount_paid,
         balance=balance,mode_of_payment=mode_of_payment,payment_status=payment_status)
         tenant_payment_record_obj.save()
         return tenant_payment_record_obj
+
+    def update (self, instance, validated_data):
+        instance.expected_amount=validated_data.get('expected_amount',instance.expected_amount)
+        instance.amount_paid=validated_data.get('amount_paid', instance.amount_paid)
+        instance.balance=validated_data.get('balance', instance.balance)
+        instance.mode_of_payment=validated_data.get('mode_of_payment',instance.mode_of_payment)
+        # instance.date_of_payment=validated_data.get('date_of_payment',
+        # instance.payment_status=validated_data.get('payment_status',instance.payment_status)
+
+        instance.save()
+
+        return instance
+
+# class TenantDetailsSerializer (ModelSerializer):
+#
+#     class META:
+#         model =

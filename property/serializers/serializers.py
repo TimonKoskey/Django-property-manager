@@ -144,3 +144,27 @@ class UnitsPicturesListSerializer(ModelSerializer):
 # 		    'number_of_rooms',
 # 		    'unit_value',
 # 		]
+
+class TenantDetailsSerializer (ModelSerializer):
+	tenant_records=SerializerMethodField()
+	tenant_current_month_payment_status=SerializerMethodField()
+	class Meta:
+		model = unitdetail_class
+		fields = [
+			# 'id',
+		    'unit_ID',
+		    'unit_size',
+		    'number_of_rooms',
+		    'unit_value',
+		    'unit_purpose',
+		    'tenant_records',
+		    'tenant_current_month_payment_status',
+		]
+
+	def get_tenant_records(self, obj):
+		tenant_records=TenantRecordSerializer(obj.tenant_records).data
+		return tenant_records
+
+	def get_tenant_current_month_payment_status(self, obj):
+		tenant_current_month_payment_status=PaymentRecordSerializer(obj.tenant_current_month_payment_status).data
+		return tenant_current_month_payment_status

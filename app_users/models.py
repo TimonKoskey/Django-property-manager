@@ -4,8 +4,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
 ROLE_CHOICES = (
-    ("Super-Administrator", "Super-Administrator"),
-    ("Administrator", "Administrator")
+    ("super-administrator", "super-administrator"),
+    ("administrator", "administrator"),
+    # ("Tenant", "Tenant")
 )
 
 PAYMENT_STATUS=(
@@ -19,7 +20,7 @@ class Location (models.Model):
     city_or_town = models.CharField(max_length=20)
     area_or_estate_name = models.CharField(max_length=20, null=True, blank=True)
     street_name = models.CharField(max_length=20, null=True, blank=True)
-    buiding_nam = models.CharField(max_length=20, null=True, blank=True)
+    buiding_name = models.CharField(max_length=20, null=True, blank=True)
 
 class ManagementCompanyDetail (models.Model):
     company_name = models.CharField(max_length=20)
@@ -35,15 +36,16 @@ class Role (models.Model):
 
     def __str__(self):
         return "%s" %(self.role_name)
-        # return "%s/%s/%s" %(self.County,self.City_or_Town,self.Area_name)
 
-class ExtendedUserDetail (models.Model):
+class ManagementPersonelDetails (models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
-    role = models.ForeignKey(Role, on_delete=models.CASCADE, blank=True, null=True)
+    role_name = models.CharField(max_length = 20,choices=ROLE_CHOICES, blank=True, null=True)
+    date_created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    # role = models.ForeignKey(Role, on_delete=models.CASCADE, blank=True, null=True)
     mobile_number = models.IntegerField(blank=True, null=True)
 
-    # def __str__(self):
-    #     return "%s - %s" %(self.user.username,self.role.role_name)
+    def __str__(self):
+        return "%s - %s" %(self.user,self.role_name)
 
 class TenantDetail (models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
@@ -79,7 +81,7 @@ class TenantPaymentRecord (models.Model):
 location_class = Location
 company_management_class = ManagementCompanyDetail
 role_class = Role
-user_detail_class = ExtendedUserDetail
+user_detail_class = ManagementPersonelDetails
 tenant_details_class = TenantDetail
 tenants_record_class = TenantsRecord
 tenant_payment_record = TenantPaymentRecord

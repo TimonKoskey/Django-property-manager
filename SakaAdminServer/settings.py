@@ -144,7 +144,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'timonkosy92@gmail.com'
-EMAIL_HOST_PASSWORD = '#$timon#$'
+EMAIL_HOST_USER = 'timonkoskey@gmail.com'
+EMAIL_HOST_PASSWORD = 'timon1963'
 EMAIL_USE_TLS = True
 # EMAIL_USE_TLS = True

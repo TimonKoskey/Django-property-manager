@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (
-    MySpecialJWT,
+    ManagementUsersLogin,
+    TenantsLogin,
     CreateManagementCompanyAPIView,
     ManagementCompanyDetailAPIView,
     CreateUserAPIView,
@@ -9,7 +10,8 @@ from .views import (
 )
 
 urlpatterns = [
-    path(r'api-token-auth/', MySpecialJWT.as_view()),
+    path(r'management/login/api-token-auth/', ManagementUsersLogin.as_view()),
+    path(r'tenant/login/api-token-auth/', TenantsLogin.as_view()),
     path(r'company/create/', CreateManagementCompanyAPIView.as_view()),
     path(r'company/details/<int:pk>/', ManagementCompanyDetailAPIView.as_view()),
     path(r'user/create/', CreateUserAPIView.as_view()),

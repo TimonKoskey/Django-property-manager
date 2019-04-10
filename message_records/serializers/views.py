@@ -27,9 +27,15 @@ from .serializers import (
 
 from message_records.models import message_class
 
-class MessageCreateAPIView (CreateAPIView):
-    serializer_class = MessageCreateSerializer
-    queryset = message_class.objects.all()
+class MessageCreateAPIView (APIView):
+
+	def post (self, request, *args, **kwargs):
+		message_data = request.data
+		sender = kwargs
+
+		message_create_serializer = MessageCreateAPIView(data=message_data)
+		if message_create_serializer.is_valid():
+
 
 class MessagesListAPIView (ListAPIView):
     serializer_class = MessagesListSerializer

@@ -8,7 +8,7 @@ from rest_framework.serializers import (
 
 from message_records.models import message_class
 
-class MessageCreateSerializer (ModelSerializer):
+class CreateMessageSerializer (ModelSerializer):
 
     class Meta:
         model = message_class
@@ -19,14 +19,14 @@ class MessageCreateSerializer (ModelSerializer):
             'message'
         ]
 
-class MessagesListSerializer (ModelSerializer):
+class ListMessagesSerializer (ModelSerializer):
 
     class Meta:
         model = message_class
         fields = [
             'id',
             'subject',
-            'message',
+            # 'message',
         ]
 
 class MessageDetailsSerializer (ModelSerializer):
