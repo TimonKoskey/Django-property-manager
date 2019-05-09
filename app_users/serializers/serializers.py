@@ -24,6 +24,7 @@ class UserSerializer (ModelSerializer):
     class Meta:
         model=User
         fields = [
+            'id',
             'first_name',
             'last_name',
             'username',
@@ -146,7 +147,7 @@ class LocationSerializer (ModelSerializer):
             'city_or_town',
             'area_or_estate_name',
             'street_name',
-            'buiding_nam',
+            'buiding_name',
         ]
 
 class TenantSerializer(ModelSerializer):

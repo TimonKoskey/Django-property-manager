@@ -20,8 +20,8 @@ from rest_framework.permissions import(
 	)
 
 from .serializers import (
-    MessageCreateSerializer,
-    MessagesListSerializer,
+    CreateMessageSerializer,
+    ListMessagesSerializer,
     MessageDetailsSerializer
 )
 
@@ -33,18 +33,42 @@ class MessageCreateAPIView (APIView):
 		message_data = request.data
 		sender = kwargs
 
-		message_create_serializer = MessageCreateAPIView(data=message_data)
-		if message_create_serializer.is_valid():
+		message_create_serializer = CreateMessageSerializer(data=message_data)
+		# if message_create_serializer.is_valid():
 
 
-class MessagesListAPIView (ListAPIView):
-    serializer_class = MessagesListSerializer
+class GetAllMessagesListAPIView (ListAPIView):
+    serializer_class = ListMessagesSerializer
 
     def get_queryset(self,*args,**kwargs):
         user_id = self.request.GET
-        print (user_id)
         queryset=message_class.objects.all()
 		# property_class.objects.get(id=user_id)
+        return queryset
+
+class GetInboxMessagesListAPIView (ListAPIView):
+    serializer_class = ListMessagesSerializer
+
+    def get_queryset(self,*args,**kwargs):
+        user_id = self.request.GET
+        queryset=queryset=message_class.objects.filter(sent_to = user_id)
+		# property_class.objects.get(id=user_id)
+        return queryset
+
+class GetOutboxMessagesListAPIView (ListAPIView):
+    serializer_class = ListMessagesSerializer
+
+    def get_queryset(self,*args,**kwargs):
+        user_id = self.request.GET
+        queryset=message_class.objects.filter(sent_from = user_id)
+        return queryset
+
+class GetNewMessagesListAPIView (ListAPIView):
+    serializer_class = ListMessagesSerializer
+
+    def get_queryset(self,*args,**kwargs):
+        user_id = self.kwargs['user_id']
+        queryset=message_class.objects.filter(sent_to = user_id, is_read = False)
         return queryset
 
 class MessageDetailsAPIView (RetrieveUpdateDestroyAPIView):

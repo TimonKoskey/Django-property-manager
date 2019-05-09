@@ -10,6 +10,7 @@ class Message (models.Model):
     message = models.CharField(max_length=500)
     status = models.CharField(max_length=20)
     date_created = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(null=True)
     object_id = models.PositiveIntegerField(null=True,blank=True)
     content_type = models.ForeignKey(ContentType,on_delete = models.CASCADE,null=True,blank=True)
     content_object = GenericForeignKey('content_type', 'object_id')
